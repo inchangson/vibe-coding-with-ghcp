@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>사용자 프로필</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-circle"></i> 사용자 프로필
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-user-circle fa-5x text-info"></i>
+                                </div>
+                                <h5 th:text="${user.username}">사용자명</h5>
+                                <p class="text-muted">Todo App 사용자</p>
+                            </div>
+                            <div class="col-md-8">
+                                <h5><i class="fas fa-chart-pie"></i> 나의 Todo 통계</h5>
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="card bg-primary text-white">
+                                            <div class="card-body py-3">
+                                                <i class="fas fa-list-ul fa-2x"></i>
+                                                <h4 class="mt-2" th:text="${totalTodos}">0</h4>
+                                                <p class="mb-0 small">전체 Todo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card bg-success text-white">
+                                            <div class="card-body py-3">
+                                                <i class="fas fa-check-circle fa-2x"></i>
+                                                <h4 class="mt-2" th:text="${completedCount}">0</h4>
+                                                <p class="mb-0 small">완료됨</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card bg-warning text-white">
+                                            <div class="card-body py-3">
+                                                <i class="fas fa-clock fa-2x"></i>
+                                                <h4 class="mt-2" th:text="${pendingCount}">0</h4>
+                                                <p class="mb-0 small">진행 중</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h6><i class="fas fa-percentage"></i> 완료율</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success"
+                                             role="progressbar"
+                                             th:style="'width: ' + ${completionRate} + '%'"
+                                             th:text="${completionRate} + '%'">
+                                            0%
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">
+                                        현재 완료율: <span th:text="${completionRate}">0</span>%
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="text-center">
+                            <h5><i class="fas fa-tools"></i> 빠른 액션</h5>
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/user/todos}" class="btn btn-primary">
+                                    <i class="fas fa-list"></i> Todo 목록
+                                </a>
+                                <a th:href="@{/user/todos/new}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> 새 Todo 추가
+                                </a>
+                                <a th:href="@{/user/dashboard}" class="btn btn-info">
+                                    <i class="fas fa-chart-bar"></i> 대시보드
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

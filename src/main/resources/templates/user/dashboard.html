@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>대시보드</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-chart-bar"></i> 대시보드</h2>
+            <div class="text-muted">
+                <i class="fas fa-user"></i> <span th:text="${user.username}">사용자명</span>님의 통계
+            </div>
+        </div>
+
+        <!-- 전체 통계 카드 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-list-ul fa-3x"></i>
+                        <h3 class="mt-2" th:text="${totalTodos}">0</h3>
+                        <p class="mb-0">전체 Todo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-3x"></i>
+                        <h3 class="mt-2" th:text="${completedCount}">0</h3>
+                        <p class="mb-0">완료된 Todo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-3x"></i>
+                        <h3 class="mt-2" th:text="${pendingCount}">0</h3>
+                        <p class="mb-0">진행 중인 Todo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-percentage fa-3x"></i>
+                        <h3 class="mt-2">
+                            <span th:text="${totalTodos > 0 ? T(java.lang.Math).round((completedCount * 100.0 / totalTodos) * 100) / 100 : 0}">0</span>%
+                        </h3>
+                        <p class="mb-0">완료율</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 우선순위별 통계 -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle"></i> 우선순위별 통계
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-arrow-up text-danger fa-2x"></i>
+                                    <h4 class="mt-2 text-danger" th:text="${highPriorityCount}">0</h4>
+                                    <p class="mb-0 small">높음</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-minus text-warning fa-2x"></i>
+                                    <h4 class="mt-2 text-warning" th:text="${mediumPriorityCount}">0</h4>
+                                    <p class="mb-0 small">보통</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-arrow-down text-secondary fa-2x"></i>
+                                    <h4 class="mt-2 text-secondary" th:text="${lowPriorityCount}">0</h4>
+                                    <p class="mb-0 small">낮음</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 진행률 차트 -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie"></i> 진행 상황
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>완료된 Todo</span>
+                                <span class="text-success fw-bold" th:text="${completedCount}">0</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success"
+                                     role="progressbar"
+                                     th:style="'width: ' + (${totalTodos > 0 ? (completedCount * 100.0 / totalTodos) : 0}) + '%'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>진행 중인 Todo</span>
+                                <span class="text-warning fw-bold" th:text="${pendingCount}">0</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-warning"
+                                     role="progressbar"
+                                     th:style="'width: ' + (${totalTodos > 0 ? (pendingCount * 100.0 / totalTodos) : 0}) + '%'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                총 <span th:text="${totalTodos}">0</span>개의 Todo 중
+                                <span class="text-success" th:text="${completedCount}">0</span>개 완료
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 빠른 액션 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body text-center">
+                        <h5 class="mb-3">
+                            <i class="fas fa-rocket"></i> 빠른 액션
+                        </h5>
+                        <div class="btn-group flex-wrap" role="group">
+                            <a th:href="@{/user/todos}" class="btn btn-primary me-2 mb-2">
+                                <i class="fas fa-list"></i> 전체 Todo 보기
+                            </a>
+                            <a th:href="@{/user/todos/new}" class="btn btn-success me-2 mb-2">
+                                <i class="fas fa-plus"></i> 새 Todo 추가
+                            </a>
+                            <a th:href="@{/user/todos/pending}" class="btn btn-warning me-2 mb-2">
+                                <i class="fas fa-clock"></i> 진행 중인 Todo
+                            </a>
+                            <a th:href="@{/user/todos/completed}" class="btn btn-outline-success me-2 mb-2">
+                                <i class="fas fa-check-circle"></i> 완료된 Todo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 빈 상태일 때 메시지 -->
+        <div th:if="${totalTodos == 0}" class="text-center py-5">
+            <i class="fas fa-chart-bar fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">아직 Todo가 없습니다</h4>
+            <p class="text-muted">첫 번째 Todo를 추가하여 생산성을 높여보세요!</p>
+            <a th:href="@{/user/todos/new}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i> 첫 번째 Todo 추가하기
+            </a>
+        </div>
+    </div>
+</body>
+</html>
